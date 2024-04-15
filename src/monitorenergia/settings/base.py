@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-8g1!$mgrd2+z(ti-3$hx(g6%lnqq_&8g21z(un&hp=ipj@8=9-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -68,18 +68,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'monitorenergia.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

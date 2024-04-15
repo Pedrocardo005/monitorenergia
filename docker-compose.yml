@@ -1,0 +1,25 @@
+services:
+  database:
+    image: postgres:15.1
+    volumes: 
+      - "monitordb:/var/lib/postgresql/data"
+    env_file: .var_env_dev
+
+  web:
+    build:
+      context: .
+    stdin_open: true
+    tty: true
+    command: bash -c 'cd code && source bin/activate && pip install -r requirements.txt && cd src && python manage.py runserver 0.0.0.0:8080'
+    volumes:
+      - .:/code
+    ports:
+      - "8080:8080"
+    expose:
+      - 8080
+    env_file: .var_env_dev
+    depends_on:
+      - database
+
+volumes:
+   monitordb:
