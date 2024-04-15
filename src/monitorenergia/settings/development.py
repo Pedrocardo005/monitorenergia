@@ -21,4 +21,4 @@ DATABASES = {
     }
 }
 
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['*']
