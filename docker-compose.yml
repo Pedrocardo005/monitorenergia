@@ -10,7 +10,7 @@ services:
       context: .
     stdin_open: true
     tty: true
-    command: bash -c 'source bin/activate && pip install -r requirements.txt && cd src && python manage.py runserver 0.0.0.0:8080'
+    command: bash -c 'cd code && source bin/activate && pip install -r requirements.txt && cd src && python manage.py runserver 0.0.0.0:8080'
     volumes:
       - .:/code
     ports:
