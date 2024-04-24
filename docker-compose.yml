@@ -1,6 +1,7 @@
 services:
   database:
     image: postgres:15.1
+    container_name: monitor-db-1
     volumes: 
       - "monitordb:/var/lib/postgresql/data"
     env_file: .var_env_dev
@@ -9,6 +10,7 @@ services:
     build:
       context: .
     stdin_open: true
+    container_name: monitor-web-1
     tty: true
     command: bash -c 'cd code && source bin/activate && pip install -r requirements.txt && cd src && python manage.py runserver 0.0.0.0:8080'
     volumes:

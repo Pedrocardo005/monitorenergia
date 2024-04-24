@@ -1,5 +1,5 @@
 DB_PORT=5432
-DB_HOST=monitorenergia-database-1
+DB_HOST=monitor-db-1
 POSTGRES_DB=monitor
 POSTGRES_USER=monitor_user
 POSTGRES_PASSWORD=kGmdR7dOTcSjY
