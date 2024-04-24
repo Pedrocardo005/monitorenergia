@@ -4,5 +4,6 @@ from . import views
 app_name = 'gerenciadorenergia'
 urlpatterns = [
     path('', view=views.index),
-    path('cadastrar/', view=views.register)
+    path('cadastrar/', view=views.register),
+    path('infos/', view=views.get_all)
 ]
