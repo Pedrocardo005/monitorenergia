@@ -7,3 +7,6 @@ class InfoConsumo(models.Model):
     consumo = models.FloatField()
     corrente = models.FloatField()
     date_time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return '{} {}'.format(self.nome_dispositivo, self.pk)

@@ -5,3 +5,4 @@ POSTGRES_USER=monitor_user
 POSTGRES_PASSWORD=kGmdR7dOTcSjY
 POSTGRES_HOST_AUTH_METHOD=trust
 DJANGO_SETTINGS_MODULE=monitorenergia.settings.development
+TZ=America/Sao_Paulo
