@@ -22,3 +22,5 @@ DATABASES = {
 }
 
 ALLOWED_HOSTS = ['*']
+
+STATIC_ROOT = "/code/src/static"
