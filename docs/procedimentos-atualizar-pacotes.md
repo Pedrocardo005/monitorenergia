@@ -5,3 +5,5 @@
  ## Erros reconhecidos durante o deploy no Python anywhere
 
 Caso o comando ```python manage.py collectstatic``` não funcionar, tente isso ```export DJANGO_SETTINGS_MODULE=monitorenergia.settings.pythonanywhere```
+
+Não se esqueça de adicionar a url da pasta com os statics na aba **Static files** da página do webapp
