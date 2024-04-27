@@ -17,6 +17,7 @@ def index(request: WSGIRequest):
 @csrf_exempt
 def register(request: WSGIRequest):
     try:
+        data = {}
         if request.method == 'POST':
 
             elemento = json.loads(request.body)
