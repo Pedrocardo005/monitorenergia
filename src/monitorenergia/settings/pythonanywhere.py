@@ -1,4 +1,4 @@
-from .base import *
+from monitorenergia.settings.base import *
 
 DATABASES = {
     'default': {
