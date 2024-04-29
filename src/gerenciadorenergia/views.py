@@ -56,3 +56,17 @@ def get_all(request: WSGIRequest):
     except Exception as error:
         print('Erro', error)
         return JsonResponse(status=500, data={'error': 'Algum erro ocorreu'})
+    
+@csrf_exempt
+def get_all_formated(request: WSGIRequest):
+    try:
+        first_info = InfoConsumo.objects.first()
+        last_info = InfoConsumo.objects.last()
+        count = InfoConsumo.objects.count()
+        lista = []
+        
+        return JsonResponse(status=200, data=lista, safe=False)
+    except Exception as error:
+        print('Erro', error)
+        return JsonResponse(status=500, data={'error': 'Algum erro ocorreu'})
+    
