@@ -9,6 +9,7 @@ from datetime import timedelta
 import json
 
 from gerenciadorenergia.models import InfoConsumo
+from gerenciadorenergia.utils import Utils
 
 # Create your views here.
 
@@ -82,29 +83,13 @@ def get_all_formated(request: WSGIRequest, formatacao: str):
             current_date_hour = timezone.now()
             start_hours = current_date_hour - timedelta(hours=1)
             results = InfoConsumo.objects.filter(date_time__gte=start_hours).order_by('date_time')
-            listing['items'] = []
-            count = results.count()
-            print('A quantidade', count)
-            if count % 10 != 0:
-                device = { 'consumo': 0 }
-                _cont = 0
-                for idx, result in enumerate(results):
-                    _cont += 1
-                    device['consumo'] += result.consumo
+            listing = Utils.get_list_consumo(results, 10)
 
-                    if _cont >= 10:
-                        device['consumo'] /= 10
-                        device['nome'] = result.nome_dispositivo
-                        listing['items'].append(device.copy())
-                        _cont = 0
-                        device['nome'] = ''
-                        device['consumo'] = 0
-                        print('Passou aqui')
-                    elif count - 1 == idx:
-                        device['consumo'] /= count % 10
-                        device['nome'] = result.nome_dispositivo
-                        listing['items'].append(device.copy())
-                        print('Passou lá')
+        if formatacao == 'day':
+            current_date_hour = timezone.now()
+            start_hours = current_date_hour - timedelta(days=1)
+            results = InfoConsumo.objects.filter(date_time__gte=start_hours).order_by('date_time')
+            listing = Utils.get_list_consumo(results, 40)
         
         return JsonResponse(status=200, data=listing, safe=False)
     except Exception as error:
