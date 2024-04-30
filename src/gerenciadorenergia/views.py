@@ -3,6 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http.response import HttpResponse
 from django.forms.models import model_to_dict
 from django.shortcuts import render
+from django.core.cache import cache
 from django.http import JsonResponse
 from django.utils import timezone
 from datetime import timedelta
@@ -34,6 +35,8 @@ def register(request: WSGIRequest):
             )
 
             new_info_consumo.save()
+
+            cache.set("current_device", nome_dispositivo, timeout=180)
 
             data = model_to_dict(new_info_consumo)
         return JsonResponse(status=200, data=data)
@@ -93,6 +96,8 @@ def get_all_formated(request: WSGIRequest, formatacao: str):
             start_hours = current_date_hour - timedelta(weeks=1)
             results = InfoConsumo.objects.filter(date_time__gte=start_hours).order_by('date_time')
             listing = Utils.get_list_consumo(results, 100, "d")
+
+        listing['current_device'] = cache.get("current_device")
         
         return JsonResponse(status=200, data=listing, safe=False)
     except Exception as error:
