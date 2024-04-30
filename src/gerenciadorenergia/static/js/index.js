@@ -48,7 +48,10 @@ function getData(format_used) {
             const data = response.items.map((element) => element.consumo);
             
             title.innerHTML = response.current_device;
-            consumo.innerHTML = `${response.current_consumo} W`;
+            
+            if (response.current_consumo) {
+                consumo.innerHTML = `${response.current_consumo} W`;
+            }
             
             chart.destroy();
 
