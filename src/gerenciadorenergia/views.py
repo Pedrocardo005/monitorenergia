@@ -5,6 +5,7 @@ from django.forms.models import model_to_dict
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.utils import timezone
+from datetime import timedelta
 import json
 
 from gerenciadorenergia.models import InfoConsumo
@@ -58,14 +59,54 @@ def get_all(request: WSGIRequest):
         return JsonResponse(status=500, data={'error': 'Algum erro ocorreu'})
     
 @csrf_exempt
-def get_all_formated(request: WSGIRequest):
+def get_all_formated(request: WSGIRequest, formatacao: str):
     try:
         first_info = InfoConsumo.objects.first()
         last_info = InfoConsumo.objects.last()
         count = InfoConsumo.objects.count()
-        lista = []
+        listing = {}
+
+        if formatacao == 'minute':
+            current_date_hour = timezone.now()
+            start_minute = current_date_hour - timedelta(minutes=1)
+            results = InfoConsumo.objects.filter(date_time__gte=start_minute)
+            listing['items'] = []
+            for result in results:
+                listing['items'].append({
+                    'nome': result.nome_dispositivo,
+                    'consumo': result.consumo,
+                    'tempo': result.date_time.strftime("%S")
+                })
+
+        if formatacao == 'hour':
+            current_date_hour = timezone.now()
+            start_hours = current_date_hour - timedelta(hours=1)
+            results = InfoConsumo.objects.filter(date_time__gte=start_hours).order_by('date_time')
+            listing['items'] = []
+            count = results.count()
+            print('A quantidade', count)
+            if count % 10 != 0:
+                device = { 'consumo': 0 }
+                _cont = 0
+                for idx, result in enumerate(results):
+                    _cont += 1
+                    device['consumo'] += result.consumo
+
+                    if _cont >= 10:
+                        device['consumo'] /= 10
+                        device['nome'] = result.nome_dispositivo
+                        listing['items'].append(device.copy())
+                        _cont = 0
+                        device['nome'] = ''
+                        device['consumo'] = 0
+                        print('Passou aqui')
+                    elif count - 1 == idx:
+                        device['consumo'] /= count % 10
+                        device['nome'] = result.nome_dispositivo
+                        listing['items'].append(device.copy())
+                        print('Passou lá')
         
-        return JsonResponse(status=200, data=lista, safe=False)
+        return JsonResponse(status=200, data=listing, safe=False)
     except Exception as error:
         print('Erro', error)
         return JsonResponse(status=500, data={'error': 'Algum erro ocorreu'})
