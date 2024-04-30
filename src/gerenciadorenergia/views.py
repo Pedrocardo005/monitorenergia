@@ -62,9 +62,6 @@ def get_all(request: WSGIRequest):
 @csrf_exempt
 def get_all_formated(request: WSGIRequest, formatacao: str):
     try:
-        first_info = InfoConsumo.objects.first()
-        last_info = InfoConsumo.objects.last()
-        count = InfoConsumo.objects.count()
         listing = {}
 
         if formatacao == 'minute':
@@ -83,13 +80,19 @@ def get_all_formated(request: WSGIRequest, formatacao: str):
             current_date_hour = timezone.now()
             start_hours = current_date_hour - timedelta(hours=1)
             results = InfoConsumo.objects.filter(date_time__gte=start_hours).order_by('date_time')
-            listing = Utils.get_list_consumo(results, 10)
+            listing = Utils.get_list_consumo(results, 10, "M")
 
         if formatacao == 'day':
             current_date_hour = timezone.now()
             start_hours = current_date_hour - timedelta(days=1)
             results = InfoConsumo.objects.filter(date_time__gte=start_hours).order_by('date_time')
-            listing = Utils.get_list_consumo(results, 40)
+            listing = Utils.get_list_consumo(results, 40, "H")
+
+        if formatacao == 'week':
+            current_date_hour = timezone.now()
+            start_hours = current_date_hour - timedelta(weeks=1)
+            results = InfoConsumo.objects.filter(date_time__gte=start_hours).order_by('date_time')
+            listing = Utils.get_list_consumo(results, 100, "d")
         
         return JsonResponse(status=200, data=listing, safe=False)
     except Exception as error:
