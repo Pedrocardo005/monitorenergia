@@ -76,7 +76,7 @@ def get_all_formated(request: WSGIRequest, formatacao: str):
                 listing['items'].append({
                     'nome': result.nome_dispositivo,
                     'consumo': result.consumo,
-                    'tempo': result.date_time.strftime("%S")
+                    'tempo': Utils.between_two_dates(result.date_time, '')
                 })
 
         if formatacao == 'hour':
