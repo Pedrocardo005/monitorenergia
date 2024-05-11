@@ -2,6 +2,7 @@
 
 const ctx = document.getElementById('myChart');
 const title = document.getElementById('title');
+const consumo = document.getElementById('consumo');
 const select = document.getElementById('select');
 const mockInformations = [];
 
@@ -47,6 +48,10 @@ function getData(format_used) {
             const data = response.items.map((element) => element.consumo);
             
             title.innerHTML = response.current_device;
+            
+            if (response.current_consumo) {
+                consumo.innerHTML = `${response.current_consumo} W`;
+            }
             
             chart.destroy();
 

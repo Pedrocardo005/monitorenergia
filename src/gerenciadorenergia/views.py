@@ -37,6 +37,7 @@ def register(request: WSGIRequest):
             new_info_consumo.save()
 
             cache.set("current_device", nome_dispositivo, timeout=180)
+            cache.set("current_consumo", consumo, timeout=180)
 
             data = model_to_dict(new_info_consumo)
         return JsonResponse(status=200, data=data)
@@ -74,6 +75,7 @@ def get_all_formated(request: WSGIRequest, formatacao: str):
             listing = Utils.get_list_consumo(results, 100, "d")
 
         listing['current_device'] = cache.get("current_device")
+        listing['current_consumo'] = cache.get("current_consumo")
         
         return JsonResponse(status=200, data=listing, safe=False)
     except Exception as error:
