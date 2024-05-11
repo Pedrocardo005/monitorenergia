@@ -6,5 +6,8 @@ urlpatterns = [
     path('', view=views.index),
     path('cadastrar/', view=views.register),
     path('infos/', view=views.get_all),
-    path('formated/<str:formatacao>/', view=views.get_all_formated)
+    path('formated/minute/', view=views.get_all_by_minute),
+    path('formated/hour/', view=views.get_all_by_hour),
+    path('formated/day/', view=views.get_all_by_day),
+    path('formated/week/', view=views.get_all_by_week),
 ]

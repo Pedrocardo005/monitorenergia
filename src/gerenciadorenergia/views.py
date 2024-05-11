@@ -67,30 +67,6 @@ def get_all_formated(request: WSGIRequest, formatacao: str):
     try:
         listing = {}
 
-        if formatacao == 'minute':
-            current_date_hour = timezone.now()
-            start_minute = current_date_hour - timedelta(minutes=1)
-            results = InfoConsumo.objects.filter(date_time__gte=start_minute)
-            listing['items'] = []
-            for result in results:
-                listing['items'].append({
-                    'nome': result.nome_dispositivo,
-                    'consumo': result.consumo,
-                    'tempo': Utils.between_two_dates(result.date_time, '')
-                })
-
-        if formatacao == 'hour':
-            current_date_hour = timezone.now()
-            start_hours = current_date_hour - timedelta(hours=1)
-            results = InfoConsumo.objects.filter(date_time__gte=start_hours).order_by('date_time')
-            listing = Utils.get_list_consumo(results, 10, "M")
-
-        if formatacao == 'day':
-            current_date_hour = timezone.now()
-            start_hours = current_date_hour - timedelta(days=1)
-            results = InfoConsumo.objects.filter(date_time__gte=start_hours).order_by('date_time')
-            listing = Utils.get_list_consumo(results, 40, "H")
-
         if formatacao == 'week':
             current_date_hour = timezone.now()
             start_hours = current_date_hour - timedelta(weeks=1)
@@ -102,5 +78,80 @@ def get_all_formated(request: WSGIRequest, formatacao: str):
         return JsonResponse(status=200, data=listing, safe=False)
     except Exception as error:
         print('Erro', error)
-        return JsonResponse(status=500, data={'error': 'Algum erro ocorreu'})
+        return JsonResponse(status=500, data={'error': 'Algum um erro'})
+    
+@csrf_exempt
+def get_all_by_minute(request: WSGIRequest):
+    try:
+        listing = {}
+        listing['items'] = []
+
+        current_date_hour = timezone.now()
+        start_minute = current_date_hour - timedelta(minutes=1)
+        results = InfoConsumo.objects.filter(date_time__gte=start_minute)
+
+        for result in results:
+            listing['items'].append({
+                'nome': result.nome_dispositivo,
+                'consumo': result.consumo,
+                'tempo': Utils.between_two_dates(result.date_time, '')
+            })
+
+        listing['current_device'] = cache.get("current_device")
+        
+        return JsonResponse(status=200, data=listing, safe=False)
+    except Exception as error:
+        print('Erro', error)
+        return JsonResponse(status=500, data={'error': 'Ocorreu um erro'})
+
+@csrf_exempt
+def get_all_by_hour(request: WSGIRequest):
+    try:
+        listing = {}
+
+        current_date_hour = timezone.now()
+        start_hours = current_date_hour - timedelta(hours=1)
+        results = InfoConsumo.objects.filter(date_time__gte=start_hours).order_by('date_time')
+        listing = Utils.get_list_consumo(results, 10, "M")
+
+        listing['current_device'] = cache.get("current_device")
+        
+        return JsonResponse(status=200, data=listing, safe=False)
+    except Exception as error:
+        print('Erro', error)
+        return JsonResponse(status=500, data={'error': 'Ocorreu um erro'})
+    
+@csrf_exempt
+def get_all_by_day(request: WSGIRequest):
+    try:
+        listing = {}
+
+        current_date_hour = timezone.now()
+        start_hours = current_date_hour - timedelta(days=1)
+        results = InfoConsumo.objects.filter(date_time__gte=start_hours).order_by('date_time')
+        listing = Utils.get_list_consumo(results, 40, "H")
+        listing['current_device'] = cache.get("current_device")
+        
+        return JsonResponse(status=200, data=listing, safe=False)
+    except Exception as error:
+        print('Erro', error)
+        return JsonResponse(status=500, data={'error': 'Ocorreu um erro'})
+    
+
+@csrf_exempt
+def get_all_by_week(request: WSGIRequest):
+    try:
+        listing = {}
+        
+        current_date_hour = timezone.now()
+        start_hours = current_date_hour - timedelta(weeks=1)
+        results = InfoConsumo.objects.filter(date_time__gte=start_hours).order_by('date_time')
+        listing = Utils.get_list_consumo(results, 100, "d")
+
+        listing['current_device'] = cache.get("current_device")
+        
+        return JsonResponse(status=200, data=listing, safe=False)
+    except Exception as error:
+        print('Erro', error)
+        return JsonResponse(status=500, data={'error': 'Algum um erro'})
     
