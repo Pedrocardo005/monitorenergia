@@ -10,3 +10,5 @@ DATABASES = {
 ALLOWED_HOSTS = ['*']
 
 STATIC_ROOT = "/home/pedrocardo/monitorenergia/src/static"
+
+DEBUG = False
