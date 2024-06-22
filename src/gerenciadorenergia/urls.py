@@ -10,4 +10,5 @@ urlpatterns = [
     path('formated/hour/', view=views.get_all_by_hour),
     path('formated/day/', view=views.get_all_by_day),
     path('formated/week/', view=views.get_all_by_week),
+    path('send/arduino', view=views.to_send_arduino_information),
 ]

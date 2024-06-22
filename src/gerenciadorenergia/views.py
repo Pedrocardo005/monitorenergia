@@ -157,3 +157,15 @@ def get_all_by_week(request: WSGIRequest):
         print('Erro', error)
         return JsonResponse(status=500, data={'error': 'Algum um erro'})
     
+
+@csrf_exempt
+def to_send_arduino_information(request: WSGIRequest):
+    try:
+        if request.method == 'POST':
+            body = json.loads(request.body.decode('utf-8'))
+
+        return JsonResponse(status=200, data={'message': 'Enviado com sucesso'})
+    except Exception as error:
+        print('Error', error)
+        return JsonResponse(status=500, data={'message': 'Erro ao efetuar a sua ação'})
+    
