@@ -11,6 +11,7 @@ import json
 
 from gerenciadorenergia.models import InfoConsumo
 from gerenciadorenergia.utils import Utils
+from monitorenergia.settings.base import SEND_ARDUINO_INFO
 
 # Create your views here.
 
@@ -38,8 +39,10 @@ def register(request: WSGIRequest):
 
             cache.set("current_device", nome_dispositivo, timeout=180)
             cache.set("current_consumo", consumo, timeout=180)
+            aditional_info = cache.get(SEND_ARDUINO_INFO)
 
             data = model_to_dict(new_info_consumo)
+            data['aditional_info'] = aditional_info
         return JsonResponse(status=200, data=data)
     except Exception as error:
         print('Erro', error)
@@ -162,7 +165,8 @@ def get_all_by_week(request: WSGIRequest):
 def to_send_arduino_information(request: WSGIRequest):
     try:
         if request.method == 'POST':
-            body = json.loads(request.body.decode('utf-8'))
+            body = json.loads(request.body)
+            cache.set(SEND_ARDUINO_INFO, body['value'], 7776000)
 
         return JsonResponse(status=200, data={'message': 'Enviado com sucesso'})
     except Exception as error:
