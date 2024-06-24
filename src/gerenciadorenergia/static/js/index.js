@@ -4,7 +4,7 @@ const ctx = document.getElementById('myChart');
 const title = document.getElementById('title');
 const consumo = document.getElementById('consumo');
 const select = document.getElementById('select');
-const toArduino = document.getElementById('to-arduino');
+// const toArduino = document.getElementById('to-arduino');
 const mockInformations = [];
 
 let setIntervalReturn = 0;
@@ -79,7 +79,7 @@ function getData(format_used) {
 
 }
     
-toArduino.addEventListener('submit', function (event) {
+/* toArduino.addEventListener('submit', function (event) {
     const value = document.getElementById('infos-arduino').value;
 
     event.preventDefault();
@@ -89,3 +89,4 @@ toArduino.addEventListener('submit', function (event) {
         body: JSON.stringify({value: value}),
     });
 });
+ */
