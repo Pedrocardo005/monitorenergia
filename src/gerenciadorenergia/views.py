@@ -103,6 +103,7 @@ def get_all_by_minute(request: WSGIRequest):
             })
 
         listing['current_device'] = cache.get("current_device")
+        listing['current_consumo'] = cache.get("current_consumo")
         
         return JsonResponse(status=200, data=listing, safe=False)
     except Exception as error:
@@ -120,6 +121,7 @@ def get_all_by_hour(request: WSGIRequest):
         listing = Utils.get_list_consumo(results, 10, "M")
 
         listing['current_device'] = cache.get("current_device")
+        listing['current_consumo'] = cache.get("current_consumo")
         
         return JsonResponse(status=200, data=listing, safe=False)
     except Exception as error:
@@ -136,6 +138,7 @@ def get_all_by_day(request: WSGIRequest):
         results = InfoConsumo.objects.filter(date_time__gte=start_hours).order_by('date_time')
         listing = Utils.get_list_consumo(results, 40, "H")
         listing['current_device'] = cache.get("current_device")
+        listing['current_consumo'] = cache.get("current_consumo")
         
         return JsonResponse(status=200, data=listing, safe=False)
     except Exception as error:
@@ -154,6 +157,7 @@ def get_all_by_week(request: WSGIRequest):
         listing = Utils.get_list_consumo(results, 100, "d")
 
         listing['current_device'] = cache.get("current_device")
+        listing['current_consumo'] = cache.get("current_consumo")
         
         return JsonResponse(status=200, data=listing, safe=False)
     except Exception as error:
