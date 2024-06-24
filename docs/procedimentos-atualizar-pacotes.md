@@ -2,7 +2,7 @@
 
  - Atualize a listagem dos pacotes no requirements.txt por meio do comando ```pip freeze > requirements.txt```
 
- ## Erros reconhecidos
+## Erros reconhecidos
 
 Caso o comando ```python manage.py collectstatic```, ou qualquer do python + django não funcionar, tente isso antes ```export DJANGO_SETTINGS_MODULE=monitorenergia.settings.pythonanywhere```
 
